@@ -7,7 +7,7 @@ table_subset$Time=format(as.POSIXct(table_subset$Time),"%H:%M:%S")
 table_subset$WeekDay=weekdays(table_subset$Date)
 datetime <- paste(as.Date(table_subset$Date), table_subset$Time)
 table_subset$Date_time <- as.POSIXct(datetime)
-png("plot4.png")
+png("plot4.png",width = 480,height = 480)
 par(mfrow=c(2,2))
 with(table_subset{
   plot(table_subset$Global_active_power~table_subset$Date_time, type="l",
