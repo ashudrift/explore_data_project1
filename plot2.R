@@ -1,0 +1,15 @@
+table=read.table("household_power_consumption.txt",sep = ";",stringsAsFactors = FALSE,header = TRUE)
+table$Date = as.Date(table$Date,"%d/%m/%Y")
+table_subset = subset(table,Date == "2007-02-01" | Date == "2007-02-02")
+str(table_subset)
+table_subset$Time=strptime(table_subset$Time,format = "%H:%M:%S")
+table_subset$Time=format(as.POSIXct(table_subset$Time),"%H:%M:%S")
+table_subset$WeekDay=weekdays(table_subset$Date)
+datetime <- paste(as.Date(table_subset$Date), table_subset$Time)
+table_subset$Date_time <- as.POSIXct(datetime)
+plot(table_subset$Global_active_power~table_subset$Date_time, type="l",
+     ylab="Global Active Power (kilowatts)", xlab="")
+png()
+plot(table_subset$Global_active_power~table_subset$Date_time, type="l",
+     ylab="Global Active Power (kilowatts)", xlab="")
+dev.off()

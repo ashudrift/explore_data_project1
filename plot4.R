@@ -1,0 +1,25 @@
+table=read.table("household_power_consumption.txt",sep = ";",stringsAsFactors = FALSE,header = TRUE)
+table$Date = as.Date(table$Date,"%d/%m/%Y")
+table_subset = subset(table,Date == "2007-02-01" | Date == "2007-02-02")
+str(table_subset)
+table_subset$Time=strptime(table_subset$Time,format = "%H:%M:%S")
+table_subset$Time=format(as.POSIXct(table_subset$Time),"%H:%M:%S")
+table_subset$WeekDay=weekdays(table_subset$Date)
+datetime <- paste(as.Date(table_subset$Date), table_subset$Time)
+table_subset$Date_time <- as.POSIXct(datetime)
+png("plot4.png")
+par(mfrow=c(2,2))
+with(table_subset{
+  plot(table_subset$Global_active_power~table_subset$Date_time, type="l",
+       ylab="Global Active Power (kilowatts)", xlab="")
+  plot(table_subset$Voltage~table_subset$Date_time, type="l",
+       ylab="Voltage", xlab="datetime")
+  plot(table_subset$Sub_metering_1~table_subset$Date_time, type="n", xlab="",ylab="Energy sub meeting")
+  with(table_subset,points(Sub_metering_1~Date_time, type="l"))
+  with(table_subset,points(Sub_metering_2~Date_time, type="l",col="red"))
+  with(table_subset,points(Sub_metering_3~Date_time, type="l",col="blue"))
+  legend("topright",col=c("black","red","blue"),lty=1, lwd=2,legend = c("Sub_metering_1","Sub_metering_2","Sub_metering_3"))
+  plot(table_subset$Global_reactive_power~table_subset$Date_time, type="l",
+       ylab="Global_Reactive_Power", xlab="datetime")
+})
+dev.off()
